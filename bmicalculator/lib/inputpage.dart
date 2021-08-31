@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'RoundButtonClass.dart';
+import 'result_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -211,11 +212,27 @@ class _InputPageState extends State<InputPage> {
                 ],
               ),
             ),
-            Container(
-              color: kBottomcontainerColor,
-              width: double.infinity,
-              height: kBottomContainerHeight,
-              margin: EdgeInsets.only(top: 10),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResultPage(),
+                  ),
+                );
+              },
+              child: Container(
+                child: Center(
+                  child: Text(
+                    "CALCULATE",
+                    style: kLabelTextStyleForNumber,
+                  ),
+                ),
+                color: kBottomcontainerColor,
+                width: double.infinity,
+                height: kBottomContainerHeight,
+                margin: EdgeInsets.only(top: 10),
+              ),
             )
           ],
         ));
