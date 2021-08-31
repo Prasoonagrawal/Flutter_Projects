@@ -1,12 +1,14 @@
 import 'dart:math';
+import 'package:bmicalculator/main.dart';
+
 import 'RoundButtonClass.dart';
 import 'result_page.dart';
-
+import 'buttomButton.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'icon_content.dart';
 import 'resuable_card.dart';
-
+import 'bmicalculatot.dart';
 import 'constants.dart';
 
 enum Gender {
@@ -110,7 +112,7 @@ class _InputPageState extends State<InputPage> {
                       child: Slider(
                           value: height.toDouble(),
                           min: 120,
-                          max: 420,
+                          max: 320,
                           onChanged: (double newvalue) {
                             setState(() {
                               height = newvalue.round();
@@ -212,28 +214,22 @@ class _InputPageState extends State<InputPage> {
                 ],
               ),
             ),
-            GestureDetector(
+            BottomButton(
+              buttomTitle: "CALCULATE",
               onTap: () {
+                Calculator Mybmi = Calculator(height: height, weight: weight);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ResultPage(),
+                    builder: (context) => ResultPage(
+                      bmiResult: Mybmi.calculation(),
+                      Interpretation: Mybmi.getInterpretation(),
+                      resultText: Mybmi.getResult(),
+                    ),
                   ),
                 );
               },
-              child: Container(
-                child: Center(
-                  child: Text(
-                    "CALCULATE",
-                    style: kLabelTextStyleForNumber,
-                  ),
-                ),
-                color: kBottomcontainerColor,
-                width: double.infinity,
-                height: kBottomContainerHeight,
-                margin: EdgeInsets.only(top: 10),
-              ),
-            )
+            ),
           ],
         ));
   }

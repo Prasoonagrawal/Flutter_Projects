@@ -11,3 +11,14 @@ const kLabelTextStyle = TextStyle(
 );
 const kLabelTextStyleForNumber =
     TextStyle(fontSize: 50, fontWeight: FontWeight.w900);
+
+const klargeboxtext = TextStyle(
+  fontSize: 30.0,
+  fontWeight: FontWeight.bold,
+);
+const kTitleTextStyle = TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
+
+const kresultTextStyle = TextStyle(
+    color: Color(0xFFF129876), fontSize: 22, fontWeight: FontWeight.bold);
+const kBMITextStyle = TextStyle(fontSize: 100, fontWeight: FontWeight.bold);
+const kBodyTextStyle = TextStyle(fontSize: 22);
