@@ -4,4 +4,4 @@ Mi Card is a personal business card. Imagine every time you wanted to give someo
 <br>
 <br>
 <br>
-<img src="https://github.com/Prasoonagrawal/Flutter_Projects/blob/master/mi_card_flutter/miCard.PNG"/>
+<img src="https://github.com/Prasoonagrawal/Flutter_Projects/blob/master/mi_card_flutter/micard.PNG"/>
