@@ -1,26 +1,27 @@
 import 'package:bmicalculator/constants.dart';
 import 'package:flutter/material.dart';
 import 'buttomButton.dart';
-import 'inputpage.dart';
 import 'resuable_card.dart';
+import 'bmicalculatot.dart';
 
 class ResultPage extends StatelessWidget {
   ResultPage(
       {required this.bmiResult,
       required this.resultText,
-      required this.Interpretation});
+      required this.Interpretation,
+      required this.colors});
 
   final String bmiResult;
   final String resultText;
   final String Interpretation;
+  final Color colors;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text("BMI Calculator"),
-        ),
+        centerTitle: true,
+        title: Text("BMI Calculator"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -44,16 +45,25 @@ class ResultPage extends StatelessWidget {
                 children: [
                   Text(
                     resultText,
-                    style: kresultTextStyle,
+                    style: TextStyle(
+                      fontSize: 30.0,
+                      color: colors,
+                    ),
                   ),
                   Text(
                     bmiResult,
-                    style: kBMITextStyle,
+                    style: TextStyle(
+                      fontSize: 25.0,
+                      color: colors,
+                    ),
                   ),
                   Text(
                     Interpretation,
                     textAlign: TextAlign.center,
-                    style: kBodyTextStyle,
+                    style: TextStyle(
+                      fontSize: 30.0,
+                      color: colors,
+                    ),
                   ),
                 ],
               ),

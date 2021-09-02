@@ -225,6 +225,7 @@ class _InputPageState extends State<InputPage> {
                       bmiResult: Mybmi.calculation(),
                       Interpretation: Mybmi.getInterpretation(),
                       resultText: Mybmi.getResult(),
+                      colors: Mybmi.getcolour(),
                     ),
                   ),
                 );

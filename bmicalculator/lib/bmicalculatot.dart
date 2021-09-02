@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 class Calculator {
   Calculator({required this.height, required this.weight});
 
@@ -27,5 +30,14 @@ class Calculator {
       return 'All Good. Miantain this';
     else
       return 'Eat moreeee';
+  }
+
+  Color getcolour() {
+    if (_bmi >= 25)
+      return Colors.red;
+    else if (_bmi > 18.5)
+      return Colors.green;
+    else
+      return Colors.yellow;
   }
 }

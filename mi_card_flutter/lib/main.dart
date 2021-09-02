@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                "FLUTTER DEVELOPER",
+                "SOFTWARE DEVELOPER ENGINEER",
                 style: TextStyle(
                     fontFamily: 'source_sans_pro',
                     fontSize: 20,
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
                     color: Colors.teal,
                   ),
                   title: Text(
-                    '+91 9878790444',
+                    '+91 98787XXXXX',
                     style: TextStyle(
                       fontFamily: 'source_sans_pro',
                       fontSize: 20,
