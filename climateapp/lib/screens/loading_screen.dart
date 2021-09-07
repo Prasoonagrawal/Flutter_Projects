@@ -1,11 +1,8 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:climateapp/services/location.dart';
 import 'package:climateapp/services/networking.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'location_screen.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -31,10 +28,20 @@ class _LoadingScreenState extends State<LoadingScreen> {
         'https://samples.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=148118c920f5cf579fcbb1d02f63d0e9');
 
     var weatherData = await helper.getData();
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen();
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Center(
+        child: SpinKitFadingCircle(
+          color: Colors.white,
+          size: 50.0,
+        ),
+      ),
+    );
   }
 }
