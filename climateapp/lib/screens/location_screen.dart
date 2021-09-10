@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:climateapp/utilities/constants.dart';
+import 'package:climateapp/services/weather.dart';
 
 class LocationScreen extends StatefulWidget {
   LocationScreen({this.locationWeather});
@@ -10,9 +11,12 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  WeatherModel weather = WeatherModel();
   late int temp;
   late int condition;
   late String city;
+  late String weathericon;
+  late String weatherdesc;
   @override
   void initState() {
     // TODO: implement initState
@@ -21,13 +25,17 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void updateUI(dynamic weatherData) {
-    double temp1 = weatherData['main']['temp'];
-    temp = temp1.toInt() - 273;
-    condition = weatherData['weather'][0]['id'];
-    city = weatherData['name'];
-    print(condition);
-    print(city);
-    print(temp);
+    setState(() {
+      double temp1 = weatherData['main']['temp'];
+      temp = temp1.toInt() - 273;
+      condition = weatherData['weather'][0]['id'];
+      weathericon = weather.getWeatherIcon(condition);
+      city = weatherData['name'];
+      weatherdesc = weather.getMessage(temp);
+      print(condition);
+      print(city);
+      print(temp);
+    });
   }
 
   @override
@@ -76,7 +84,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       style: kTempTextStyle,
                     ),
                     Text(
-                      '☀️',
+                      '',
                       style: kConditionTextStyle,
                     ),
                   ],
@@ -85,7 +93,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "It's 🍦 time in San Francisco!",
+                  "$weatherdesc in $city!",
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
