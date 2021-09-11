@@ -1,3 +1,4 @@
+import 'package:climateapp/screens/city_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:climateapp/utilities/constants.dart';
 import 'package:climateapp/services/weather.dart';
@@ -41,9 +42,6 @@ class _LocationScreenState extends State<LocationScreen> {
       weathericon = weather.getWeatherIcon(condition);
       city = weatherData['name'];
       weatherdesc = weather.getMessage(temp);
-      print(condition);
-      print(city);
-      print(temp);
     });
   }
 
@@ -79,7 +77,21 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      var typedName = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CityScreen();
+                          },
+                        ),
+                      );
+                      if (typedName != null) {
+                        var weatherData =
+                            await weather.getCityWeather(typedName);
+                        updateUI(weatherData);
+                      }
+                    },
                     child: Icon(
                       Icons.location_city,
                       size: 50.0,
