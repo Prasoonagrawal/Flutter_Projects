@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'coin_data.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:io' show Platform;
 
 class PriceScreen extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = 'USD';
 
-  List<DropdownMenuItem<String>> getDropdownitems() {
+  DropdownButton<String> getDropDownButton() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (int i = 0; i < currenciesList.length; i++) {
       String currency = currenciesList[i];
@@ -22,10 +23,18 @@ class _PriceScreenState extends State<PriceScreen> {
       );
       dropDownItems.add(result);
     }
-    return dropDownItems;
+    return DropdownButton(
+      items: dropDownItems,
+      value: selectedCurrency,
+      onChanged: (value) {
+        setState(() {
+          selectedCurrency = value.toString();
+        });
+      },
+    );
   }
 
-  List<Widget> getPickerItem() {
+  CupertinoPicker getPicker() {
     List<Text> pickerItem = [];
     for (String currency in currenciesList) {
       pickerItem.add(Text(
@@ -33,7 +42,22 @@ class _PriceScreenState extends State<PriceScreen> {
         style: TextStyle(color: Colors.white),
       ));
     }
-    return pickerItem;
+    return CupertinoPicker(
+      backgroundColor: Colors.lightBlue,
+      itemExtent: 32,
+      onSelectedItemChanged: (selectedIndex) {
+        print(selectedIndex);
+      },
+      children: pickerItem,
+    );
+  }
+
+  Widget getplatoformPicker() {
+    if (Platform.isAndroid) {
+      return getDropDownButton();
+    }
+
+    return getPicker();
   }
 
   @override
@@ -68,30 +92,14 @@ class _PriceScreenState extends State<PriceScreen> {
             ),
           ),
           Container(
-              height: 150.0,
-              alignment: Alignment.center,
-              padding: EdgeInsets.only(bottom: 30.0),
-              color: Colors.lightBlue,
-              child: CupertinoPicker(
-                backgroundColor: Colors.lightBlue,
-                itemExtent: 32,
-                onSelectedItemChanged: (selectedIndex) {
-                  print(selectedIndex);
-                },
-                children: getPickerItem(),
-              )),
+            height: 150.0,
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(bottom: 30.0),
+            color: Colors.lightBlue,
+            child: getplatoformPicker(),
+          ),
         ],
       ),
     );
   }
 }
-
-//  DropdownButton(
-//               items: getDropdownitems(),
-//               value: selectedCurrency,
-//               onChanged: (value) {
-//                 setState(() {
-//                   selectedCurrency = value.toString();
-//                 });
-//               },
-//             ),
