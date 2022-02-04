@@ -29,11 +29,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  height: 130.0,
-                  child: Image.asset('images/logo.png'),
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: Container(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
+                  ),
                 ),
               ),
               SizedBox(
@@ -49,7 +51,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your email')),
               SizedBox(
-                height: 10.0,
+                height: 30.0,
               ),
               TextField(
                   obscureText: true,
@@ -61,7 +63,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your Password')),
               SizedBox(
-                height: 24.0,
+                height: 40.0,
               ),
               RoundedButton(
                   title: 'Register',

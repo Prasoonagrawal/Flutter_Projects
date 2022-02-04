@@ -6,6 +6,9 @@ import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+final _firestore = FirebaseFirestore.instance;
+User loggedInUser;
+
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
   @override
@@ -13,10 +16,9 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final _firestore = FirebaseFirestore.instance;
-
+  final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
-  User loggedInUser;
+
   String messageText;
 
   @override
@@ -37,13 +39,6 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  // void getMessages() async {
-  //   final messages = await _firestore.collection('messages').get();
-  //   for (var message in messages.docs) {
-  //     print(message.data);
-  //   }
-  // }
-
   void messagesStream() async {
     await for (var snapshot in _firestore.collection('messages').snapshots()) {
       for (var message in snapshot.docs) {
@@ -62,9 +57,9 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: Icon(Icons.close),
               onPressed: () {
                 //Implement logout functionality
-                // _auth.signOut();
-                // Navigator.pushNamed(context, LoginScreen.id);
                 messagesStream();
+                _auth.signOut();
+                Navigator.pushNamed(context, LoginScreen.id);
               }),
         ],
         title: Text('⚡️Chat'),
@@ -75,28 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            StreamBuilder<QuerySnapshot>(
-              stream: _firestore.collection('messages').snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator(backgroundColor: Colors.lightBlue,),)
-                }
-
-                final messages = snapshot.data.docs;
-                List<Text> messageWidgets = [];
-                for (var message in messages) {
-                  final messageText = message.get('text');
-                  final messageSender = message.get('sender');
-
-                  final messageWidget =
-                      Text('$messageText from $messageSender');
-                  messageWidgets.add(messageWidget);
-                }
-                return Column(
-                  children: messageWidgets,
-                );
-              },
-            ),
+            MessagesStream(),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -104,6 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
+                      controller: messageTextController,
                       onChanged: (value) {
                         //Do something with the user input.
                         messageText = value;
@@ -113,6 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   FlatButton(
                     onPressed: () {
+                      messageTextController.clear();
                       //Implement send functionality.
                       _firestore.collection('messages').add({
                         'text': messageText,
@@ -129,6 +105,87 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MessagesStream extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _firestore.collection('messages').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.lightBlue,
+            ),
+          );
+        }
+
+        final messages = snapshot.data.docs;
+        List<MessageBubble> messageBubbles = [];
+        for (var message in messages) {
+          final messageText = message.get('text');
+          final messageSender = message.get('sender');
+
+          final currentuser = loggedInUser.email;
+
+          if (currentuser == loggedInUser) {}
+          final messageBubble = MessageBubble(
+            sender: messageSender,
+            text: messageText,
+            isMe: currentuser == messageSender,
+          );
+          messageBubbles.add(messageBubble);
+        }
+        return Expanded(
+          child: ListView(
+            reverse: true,
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            children: messageBubbles,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class MessageBubble extends StatelessWidget {
+  MessageBubble({this.sender, this.text, this.isMe});
+  final String sender;
+  final String text;
+  final bool isMe;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          Text(
+            sender,
+            style: TextStyle(fontSize: 12, color: Colors.black54),
+          ),
+          Material(
+            borderRadius: BorderRadius.only(
+                topLeft: isMe ? Radius.circular(30) : Radius.circular(1),
+                topRight: isMe ? Radius.circular(1) : Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30)),
+            elevation: 5.0,
+            color: isMe ? Colors.lightBlueAccent : Colors.black54,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Text(
+                '$text',
+                style: TextStyle(color: Colors.white, fontSize: 15.0),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
